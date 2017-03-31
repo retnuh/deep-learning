@@ -1,2 +1,6 @@
 */.ipynb_checkpoints
 .DS_Store
+
+# Ignore downloaded datasets
+embeddings/data/
+embeddings/text8.zip
