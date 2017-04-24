@@ -11,7 +11,7 @@ import numpy as np
 # [height, width, depth]
 def load_image(path):
     # load image
-    img = skimage.io.imread(path)
+    img = skimage.io.imread(path, mode='constant')
     img = img / 255.0
     assert (0 <= img).all() and (img <= 1.0).all()
     # print "Original Image Shape: ", img.shape
