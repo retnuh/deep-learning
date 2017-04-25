@@ -11786,7 +11786,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -11920,15 +11920,18 @@ les états-unis est parfois occupé en janvier , et il est parfois chaud en nove
 <span class="sd">    :param target_vocab_to_int: Dictionary to go from the target words to an id</span>
 <span class="sd">    :return: A tuple of lists (source_id_text, target_id_text)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">source_sentences</span> <span class="o">=</span> <span class="n">source_text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">target_sentences</span> <span class="o">=</span> <span class="n">target_text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">list_source_ids</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">list_target_ids</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">source_sentence</span><span class="p">,</span> <span class="n">target_sentence</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">source_sentences</span><span class="p">,</span> <span class="n">target_sentences</span><span class="p">):</span>
-        <span class="n">list_source_ids</span><span class="o">.</span><span class="n">append</span><span class="p">([</span> <span class="n">source_vocab_to_int</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">source_sentence</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
-        <span class="n">target_ids</span> <span class="o">=</span> <span class="p">[</span> <span class="n">target_vocab_to_int</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">target_sentence</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
-        <span class="n">target_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_vocab_to_int</span><span class="p">[</span><span class="s1">&#39;&lt;EOS&gt;&#39;</span><span class="p">])</span>
-        <span class="n">list_target_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target_ids</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">helper</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">vocab_to_int</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">sentences</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+            <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span> <span class="n">vocab_to_int</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
+            <span class="k">if</span> <span class="n">extra</span><span class="p">:</span>
+                <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">extra</span><span class="p">)</span>
+            <span class="n">arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">arr</span>
+            
+    <span class="n">list_source_ids</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">source_text</span><span class="p">,</span> <span class="n">source_vocab_to_int</span><span class="p">)</span>
+    <span class="n">list_target_ids</span> <span class="o">=</span> <span class="n">helper</span><span class="p">(</span><span class="n">target_text</span><span class="p">,</span> <span class="n">target_vocab_to_int</span><span class="p">,</span> <span class="n">target_vocab_to_int</span><span class="p">[</span><span class="s1">&#39;&lt;EOS&gt;&#39;</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">list_source_ids</span><span class="p">,</span> <span class="n">list_target_ids</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -11996,7 +11999,7 @@ les états-unis est parfois occupé en janvier , et il est parfois chaud en nove
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -12004,6 +12007,8 @@ les états-unis est parfois occupé en janvier , et il est parfois chaud en nove
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">helper</span>
+<span class="kn">import</span> <span class="nn">problem_unittests</span> <span class="k">as</span> <span class="nn">tests</span>
+
 
 <span class="p">(</span><span class="n">source_int_text</span><span class="p">,</span> <span class="n">target_int_text</span><span class="p">),</span> <span class="p">(</span><span class="n">source_vocab_to_int</span><span class="p">,</span> <span class="n">target_vocab_to_int</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">load_preprocess</span><span class="p">()</span>
 </pre></div>
@@ -12015,7 +12020,7 @@ les états-unis est parfois occupé en janvier , et il est parfois chaud en nove
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">target_vocab_to_int</span><span class="p">[</span><span class="s1">&#39;&lt;UNK&gt;&#39;</span><span class="p">]</span>
@@ -12030,7 +12035,7 @@ les états-unis est parfois occupé en janvier , et il est parfois chaud en nove
 
 
 <div class="output_area">
-<div class="prompt output_prompt">Out[6]:</div>
+<div class="prompt output_prompt">Out[9]:</div>
 
 
 
@@ -12056,7 +12061,7 @@ les états-unis est parfois occupé en janvier , et il est parfois chaud en nove
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -12128,7 +12133,7 @@ Default GPU Device: /gpu:0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">model_inputs</span><span class="p">():</span>
@@ -12136,11 +12141,11 @@ Default GPU Device: /gpu:0
 <span class="sd">    Create TF Placeholders for input, targets, and learning rate.</span>
 <span class="sd">    :return: Tuple (input, targets, learning rate, keep probability)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
+    <span class="n">input_text</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
     <span class="n">targets</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
     <span class="n">lr</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>    
     <span class="n">kp</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;keep_prob&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">input</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">kp</span>
+    <span class="k">return</span> <span class="n">input_text</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">kp</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">DON&#39;T MODIFY ANYTHING IN THIS CELL THAT IS BELOW THIS LINE</span>
@@ -12181,7 +12186,7 @@ Default GPU Device: /gpu:0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">process_decoding_input</span><span class="p">(</span><span class="n">target_data</span><span class="p">,</span> <span class="n">target_vocab_to_int</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
@@ -12235,7 +12240,7 @@ Default GPU Device: /gpu:0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">encoding_layer</span><span class="p">(</span><span class="n">rnn_inputs</span><span class="p">,</span> <span class="n">rnn_size</span><span class="p">,</span> <span class="n">num_layers</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">):</span>
@@ -12293,7 +12298,7 @@ Default GPU Device: /gpu:0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">decoding_layer_train</span><span class="p">(</span><span class="n">encoder_state</span><span class="p">,</span> <span class="n">dec_cell</span><span class="p">,</span> <span class="n">dec_embed_input</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="n">decoding_scope</span><span class="p">,</span>
@@ -12314,9 +12319,9 @@ Default GPU Device: /gpu:0
         <span class="n">dec_cell</span><span class="p">,</span> <span class="n">train_decoder_fn</span><span class="p">,</span> <span class="n">dec_embed_input</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">decoding_scope</span><span class="p">)</span>
     
     <span class="c1"># Apply output function</span>
-    <span class="n">train_logits</span> <span class="o">=</span>  <span class="n">output_fn</span><span class="p">(</span><span class="n">train_pred</span><span class="p">)</span>
-    <span class="n">drop</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">train_logits</span><span class="p">,</span> <span class="n">keep_prob</span><span class="o">=</span><span class="n">keep_prob</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">drop</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">train_pred</span><span class="p">,</span> <span class="n">keep_prob</span><span class="o">=</span><span class="n">keep_prob</span><span class="p">)</span>
+    <span class="n">train_logits</span> <span class="o">=</span>  <span class="n">output_fn</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">train_logits</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -12358,7 +12363,7 @@ Default GPU Device: /gpu:0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">decoding_layer_infer</span><span class="p">(</span><span class="n">encoder_state</span><span class="p">,</span> <span class="n">dec_cell</span><span class="p">,</span> <span class="n">dec_embeddings</span><span class="p">,</span> <span class="n">start_of_sequence_id</span><span class="p">,</span> <span class="n">end_of_sequence_id</span><span class="p">,</span>
@@ -12381,8 +12386,9 @@ Default GPU Device: /gpu:0
         <span class="n">output_fn</span><span class="p">,</span> <span class="n">encoder_state</span><span class="p">,</span> <span class="n">dec_embeddings</span><span class="p">,</span> <span class="n">start_of_sequence_id</span><span class="p">,</span> <span class="n">end_of_sequence_id</span><span class="p">,</span> 
         <span class="n">maximum_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
     <span class="n">inference_logits</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">seq2seq</span><span class="o">.</span><span class="n">dynamic_rnn_decoder</span><span class="p">(</span><span class="n">dec_cell</span><span class="p">,</span> <span class="n">infer_decoder_fn</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">decoding_scope</span><span class="p">)</span>
-    <span class="n">drop</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">inference_logits</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">drop</span>
+    <span class="c1"># Dropout not needed for inference!</span>
+    <span class="c1"># drop = tf.nn.dropout(inference_logits, keep_prob)</span>
+    <span class="k">return</span> <span class="n">inference_logits</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -12431,7 +12437,7 @@ Default GPU Device: /gpu:0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">decoding_layer</span><span class="p">(</span><span class="n">dec_embed_input</span><span class="p">,</span> <span class="n">dec_embeddings</span><span class="p">,</span> <span class="n">encoder_state</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="n">rnn_size</span><span class="p">,</span>
@@ -12458,8 +12464,7 @@ Default GPU Device: /gpu:0
         <span class="n">output_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">fully_connected</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">decoding_scope</span><span class="p">)</span>
         <span class="n">training_logits</span> <span class="o">=</span> <span class="n">decoding_layer_train</span><span class="p">(</span><span class="n">encoder_state</span><span class="p">,</span> <span class="n">dec_cell</span><span class="p">,</span> <span class="n">dec_embed_input</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> 
                                                <span class="n">decoding_scope</span><span class="p">,</span> <span class="n">output_fn</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">)</span>
-
-    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s2">&quot;decoding&quot;</span><span class="p">,</span> <span class="n">reuse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">decoding_scope</span><span class="p">:</span>
+        <span class="n">decoding_scope</span><span class="o">.</span><span class="n">reuse_variables</span><span class="p">()</span>
         <span class="n">inference_logits</span> <span class="o">=</span> <span class="n">decoding_layer_infer</span><span class="p">(</span><span class="n">encoder_state</span><span class="p">,</span> <span class="n">dec_cell</span><span class="p">,</span> <span class="n">dec_embeddings</span><span class="p">,</span> 
                                                 <span class="n">target_vocab_to_int</span><span class="p">[</span><span class="s1">&#39;&lt;GO&gt;&#39;</span><span class="p">],</span> <span class="n">target_vocab_to_int</span><span class="p">[</span><span class="s1">&#39;&lt;EOS&gt;&#39;</span><span class="p">],</span>
                                                 <span class="n">sequence_length</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">decoding_scope</span><span class="p">,</span> <span class="n">output_fn</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">)</span>
@@ -12512,7 +12517,7 @@ Default GPU Device: /gpu:0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">seq2seq_model</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">target_data</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">sequence_length</span><span class="p">,</span> <span class="n">source_vocab_size</span><span class="p">,</span> <span class="n">target_vocab_size</span><span class="p">,</span>
@@ -12595,20 +12600,20 @@ Default GPU Device: /gpu:0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Number of Epochs</span>
 <span class="n">epochs</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="c1"># Batch Size</span>
-<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1370</span>
 <span class="c1"># RNN Size</span>
 <span class="n">rnn_size</span> <span class="o">=</span> <span class="mi">250</span>
 <span class="c1"># Number of Layers</span>
 <span class="n">num_layers</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="c1"># Embedding Size</span>
-<span class="n">encoding_embedding_size</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="n">decoding_embedding_size</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">encoding_embedding_size</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">decoding_embedding_size</span> <span class="o">=</span> <span class="mi">256</span>
 <span class="c1"># Learning Rate</span>
 <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
 <span class="c1"># Dropout Keep Probability</span>
@@ -12632,7 +12637,7 @@ Default GPU Device: /gpu:0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -12686,7 +12691,7 @@ Default GPU Device: /gpu:0
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -12766,26 +12771,26 @@ Default GPU Device: /gpu:0
 <div class="prompt"></div>
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Epoch   0 Batch  135/137 - Train Accuracy:  0.602, Validation Accuracy:  0.625, Loss:  2.120
-Epoch   1 Batch  135/137 - Train Accuracy:  0.729, Validation Accuracy:  0.746, Loss:  1.619
-Epoch   2 Batch  135/137 - Train Accuracy:  0.840, Validation Accuracy:  0.849, Loss:  1.400
-Epoch   3 Batch  135/137 - Train Accuracy:  0.912, Validation Accuracy:  0.917, Loss:  1.272
-Epoch   4 Batch  135/137 - Train Accuracy:  0.920, Validation Accuracy:  0.939, Loss:  1.232
-Epoch   5 Batch  135/137 - Train Accuracy:  0.940, Validation Accuracy:  0.955, Loss:  1.192
-Epoch   6 Batch  135/137 - Train Accuracy:  0.951, Validation Accuracy:  0.963, Loss:  1.162
-Epoch   7 Batch  135/137 - Train Accuracy:  0.959, Validation Accuracy:  0.964, Loss:  1.173
-Epoch   8 Batch  135/137 - Train Accuracy:  0.957, Validation Accuracy:  0.963, Loss:  1.172
-Epoch   9 Batch  135/137 - Train Accuracy:  0.961, Validation Accuracy:  0.966, Loss:  1.154
-Epoch  10 Batch  135/137 - Train Accuracy:  0.963, Validation Accuracy:  0.969, Loss:  1.134
-Epoch  11 Batch  135/137 - Train Accuracy:  0.970, Validation Accuracy:  0.968, Loss:  1.143
-Epoch  12 Batch  135/137 - Train Accuracy:  0.969, Validation Accuracy:  0.971, Loss:  1.174
-Epoch  13 Batch  135/137 - Train Accuracy:  0.973, Validation Accuracy:  0.970, Loss:  1.159
-Epoch  14 Batch  135/137 - Train Accuracy:  0.970, Validation Accuracy:  0.968, Loss:  1.111
-Epoch  15 Batch  135/137 - Train Accuracy:  0.970, Validation Accuracy:  0.973, Loss:  1.159
-Epoch  16 Batch  135/137 - Train Accuracy:  0.973, Validation Accuracy:  0.969, Loss:  1.151
-Epoch  17 Batch  135/137 - Train Accuracy:  0.970, Validation Accuracy:  0.974, Loss:  1.157
-Epoch  18 Batch  135/137 - Train Accuracy:  0.970, Validation Accuracy:  0.972, Loss:  1.142
-Epoch  19 Batch  135/137 - Train Accuracy:  0.975, Validation Accuracy:  0.971, Loss:  1.159
+<pre>Epoch   0 Batch   98/100 - Train Accuracy:  0.535, Validation Accuracy:  0.569, Loss:  0.829
+Epoch   1 Batch   98/100 - Train Accuracy:  0.674, Validation Accuracy:  0.695, Loss:  0.554
+Epoch   2 Batch   98/100 - Train Accuracy:  0.775, Validation Accuracy:  0.800, Loss:  0.294
+Epoch   3 Batch   98/100 - Train Accuracy:  0.883, Validation Accuracy:  0.905, Loss:  0.131
+Epoch   4 Batch   98/100 - Train Accuracy:  0.914, Validation Accuracy:  0.931, Loss:  0.077
+Epoch   5 Batch   98/100 - Train Accuracy:  0.926, Validation Accuracy:  0.943, Loss:  0.056
+Epoch   6 Batch   98/100 - Train Accuracy:  0.935, Validation Accuracy:  0.947, Loss:  0.044
+Epoch   7 Batch   98/100 - Train Accuracy:  0.946, Validation Accuracy:  0.956, Loss:  0.038
+Epoch   8 Batch   98/100 - Train Accuracy:  0.948, Validation Accuracy:  0.962, Loss:  0.032
+Epoch   9 Batch   98/100 - Train Accuracy:  0.953, Validation Accuracy:  0.962, Loss:  0.028
+Epoch  10 Batch   98/100 - Train Accuracy:  0.951, Validation Accuracy:  0.964, Loss:  0.027
+Epoch  11 Batch   98/100 - Train Accuracy:  0.959, Validation Accuracy:  0.966, Loss:  0.024
+Epoch  12 Batch   98/100 - Train Accuracy:  0.960, Validation Accuracy:  0.968, Loss:  0.022
+Epoch  13 Batch   98/100 - Train Accuracy:  0.963, Validation Accuracy:  0.969, Loss:  0.021
+Epoch  14 Batch   98/100 - Train Accuracy:  0.963, Validation Accuracy:  0.968, Loss:  0.022
+Epoch  15 Batch   98/100 - Train Accuracy:  0.967, Validation Accuracy:  0.968, Loss:  0.020
+Epoch  16 Batch   98/100 - Train Accuracy:  0.967, Validation Accuracy:  0.965, Loss:  0.017
+Epoch  17 Batch   98/100 - Train Accuracy:  0.970, Validation Accuracy:  0.968, Loss:  0.016
+Epoch  18 Batch   98/100 - Train Accuracy:  0.966, Validation Accuracy:  0.971, Loss:  0.016
+Epoch  19 Batch   98/100 - Train Accuracy:  0.969, Validation Accuracy:  0.967, Loss:  0.015
 Model Trained and Saved
 </pre>
 </div>
@@ -12807,7 +12812,7 @@ Model Trained and Saved
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -12833,7 +12838,7 @@ Model Trained and Saved
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
@@ -12872,7 +12877,7 @@ Model Trained and Saved
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sentence_to_seq</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">vocab_to_int</span><span class="p">):</span>
@@ -12925,10 +12930,10 @@ Model Trained and Saved
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[37]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">translate_sentence</span> <span class="o">=</span> <span class="s1">&#39;I like Paris in the summer .&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">translate_sentence</span> <span class="o">=</span> <span class="s1">&#39;Paris is cold and wet in the winter .&#39;</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -12970,12 +12975,12 @@ Model Trained and Saved
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Input
-  Word Ids:      [117, 40, 78, 95, 173, 105, 12]
-  English Words: [&#39;i&#39;, &#39;like&#39;, &#39;paris&#39;, &#39;in&#39;, &#39;the&#39;, &#39;summer&#39;, &#39;.&#39;]
+  Word Ids:      [18, 192, 184, 58, 185, 120, 40, 163, 177]
+  English Words: [&#39;paris&#39;, &#39;is&#39;, &#39;cold&#39;, &#39;and&#39;, &#39;wet&#39;, &#39;in&#39;, &#39;the&#39;, &#39;winter&#39;, &#39;.&#39;]
 
 Prediction
-  Word Ids:      [27, 42, 116, 201, 42, 47, 0, 98, 1]
-  French Words: [&#34;j&#39;aime&#34;, &#39;les&#39;, &#39;raisins&#39;, &#39;,&#39;, &#39;les&#39;, &#39;en&#39;, &#39;&lt;PAD&gt;&#39;, &#39;.&#39;, &#39;&lt;EOS&gt;&#39;]
+  Word Ids:      [256, 289, 202, 98, 312, 150, 32, 77, 26, 315, 1]
+  French Words: [&#39;paris&#39;, &#39;est&#39;, &#39;froid&#39;, &#39;pendant&#39;, &#34;l&#39;&#34;, &#39;automne&#39;, &#39;,&#39;, &#39;et&#39;, &#39;il&#39;, &#39;.&#39;, &#39;&lt;EOS&gt;&#39;]
 </pre>
 </div>
 </div>
